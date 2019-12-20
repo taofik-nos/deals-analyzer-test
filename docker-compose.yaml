@@ -1,0 +1,29 @@
+version: '3'
+services:
+  mysql-server:
+    container_name: mysql-server
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: dealsanalyzer
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: dealsanalyzeruser
+      MYSQL_PASSWORD: password
+    ports:
+      - "6033:3306"
+    restart: always
+
+  webapp:
+    restart: always
+    build:
+      context: /
+      dockerfile: Dockerfile
+    working_dir: /
+    volumes:
+      - ./app:/deals-analyzer
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    command: mvn clean spring-boot:run
+    depends_on:
+      - mysql-server

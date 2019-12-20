@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Deals Analyser</title>
+</head>
+<body style="  padding-top: 5rem;">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/">Deals Analyzer</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<main role="main" class="container">
+    <div class="row content">
+        <div class="col-md-12">
+            <div class="alert alert-info" role="alert" th:if="${message}">
+                <h2 th:text="${message}"/>
+            </div>
+
+            <div class="alert alert-danger" role="alert" th:if="${error}">
+                <h2 th:text="${error}"/>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <h4>Upload Single File:</h4>
+            <form method="POST" th:action="@{/uploadFile}" enctype="multipart/form-data">
+                <!--            <input class="input" accept=".csv" type="file" name="file"/> <br/><br/>-->
+                <div class="custom-file">
+                    <input required accept=".csv" type="file" class="custom-file-input" name="file" id="file">
+                    <label class="custom-file-label" for="file">Choose file</label>
+                </div>
+                <br>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h4>Check results by file name:</h4>
+
+            <form method="POST" th:action="@{/checkResults}">
+                <!--            <input class="input" accept=".csv" type="file" name="file"/> <br/><br/>-->
+                <input type="text" placeholder="file name" class="form-control" name="fileName" id="fileName">
+
+                <button class="btn btn-primary" type="submit">Check</button>
+            </form>
+
+
+        </div>
+        <div class="col-md-12">
+            <hr/>
+        </div>
+        <div class="col-md-12">
+            <h4>Results:</h4>
+
+            <!--            <span th:if="${results}">-->
+            <!--            <span th:text="${results.fileName}"> </span>-->
+
+            <table class="table table-bordered" th:if="${results}">
+                <thead>
+                <th>Id</th>
+                <th>File Name</th>
+                <th>Valid Records</th>
+                <th>Invalid Records</th>
+                <th>Execution Time (Seconds)</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${results.id}"></td>
+                    <td th:text="${results.fileName}"></td>
+                    <td th:text="${results.validDealsCount}"></td>
+                    <td th:text="${results.invalidDealsCount}"></td>
+                    <td th:text="${results.executionTimeInMilis/1000.0}"></td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+            <div th:if="${results == null}">
+                No results. Please upload a new file or lookup a previous file by name above.
+            </div>
+
+
+        </div>
+    </div>
+
+
+</main><!-- /.container -->
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+</html>
